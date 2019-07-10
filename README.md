@@ -7,16 +7,16 @@ sidecar-operator是基于[kubebuilder](https://github.com/kubernetes-sigs/kubebu
 
 主要目录介绍：
 - 配置相关
-config/crds: CRD的定义
-config/cr: 一个CR的例子
-config/rbac: rbac相关的yaml文件
-config/sample: 一个测试用例，包含测试deployement, sidecar模板所在configmap
-config/ssl: kube-apiserver请求sidecar-operator webhook server的SSL证书及生成脚本
-config/manager: sidecar-operator本身部署相关的Service, Statefulset, MutatingWebhookConfiguration定义
+config/crds: CRD的定义  
+config/cr: 一个CR的例子  
+config/rbac: rbac相关的yaml文件  
+config/sample: 一个测试用例，包含测试deployement, sidecar模板所在configmap  
+config/ssl: kube-apiserver请求sidecar-operator webhook server的SSL证书及生成脚本  
+config/manager: sidecar-operator本身部署相关的Service, Statefulset, MutatingWebhookConfiguration定义  
 
-- 功能模块
-pkg/api: CRD接口定义
-pkg/controller: CR提交后触发的Reconcile具体逻辑，包括对选定pod进行delete，sidecar configmap的校验，sidecar数量的更新，configmap name的传递等
+- 功能模块  
+pkg/api: CRD接口定义  
+pkg/controller: CR提交后触发的Reconcile具体逻辑，包括对选定pod进行delete，sidecar configmap的校验，sidecar数量的更新，configmap name的传递等  
 pkg/webhook: webhook server对pod spec进行修改的具体逻辑  
 
 
