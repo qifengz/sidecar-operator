@@ -1,0 +1,8 @@
+apiVersion: v1
+data:
+  num: "1"
+  sidecar-template: "name: sidecar-nginx\nimage: nginx:latest \nports:\n- containerPort: 80\n"
+kind: ConfigMap
+metadata:
+  name: sidecar-templ-configmap
+  namespace: test

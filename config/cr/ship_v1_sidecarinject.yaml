@@ -1,0 +1,14 @@
+apiVersion: ship.github.com/v1
+kind: SidecarInject
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: sidecarinject-sample
+  namespace: test
+spec:
+  # Add fields here
+  selector:
+    app: nginx
+  sidecarNum: 4
+  sidecarConfigmap: sidecar-templ-configmap
+  

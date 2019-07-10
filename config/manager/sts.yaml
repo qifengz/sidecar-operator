@@ -1,0 +1,79 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    control-plane: sidecar-operator-controller-manager
+    controller-tools.k8s.io: "1.0"
+  name: sidecar-operator-controller-manager
+  namespace: operator-system
+spec:
+  selector:
+    matchLabels:
+      control-plane: sidecar-operator-controller-manager
+      controller-tools.k8s.io: "1.0"
+  serviceName: webhook-server-service
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        control-plane: sidecar-operator-controller-manager
+        controller-tools.k8s.io: "1.0"
+    spec:
+      containers:
+      - command:
+        - ./manager
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: SECRET_NAME
+          value: sidecar-operator-webhook-server-secret
+        - name: KUBERNETES_SERVICE_HOST
+          value: sz-bdmaster-uae2.uc.local
+        - name: KUBERNETES_SERVICE_PORT
+          value: "6443"
+        image: docker-hub.ucweb.com:5000/uae-common/operator/sidecar:release-v0.1.0
+        imagePullPolicy: Always
+        name: manager
+        ports:
+        - containerPort: 9876
+          name: webhook-server
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 200m
+            memory: 200Mi
+        volumeMounts:
+        - mountPath: /tmp/cert
+          name: cert
+          readOnly: true
+        - mountPath: /storage
+          name: storage
+      terminationGracePeriodSeconds: 10
+      dnsPolicy: ClusterFirst
+      volumes:
+      - name: cert
+        secret:
+          defaultMode: 420
+          secretName: sidecar-operator-webhook-server-secret
+  updateStrategy:
+    type: OnDelete
+  volumeClaimTemplates:
+  - metadata:
+      name: storage
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 20Gi
+      selector:
+        matchExpressions:
+          - key: vip
+            operator: DoesNotExist
+      storageClassName: local-storage
