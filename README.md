@@ -17,7 +17,7 @@ config/manager: sidecar-operator本身部署相关的Service, Statefulset, Mutat
 - 功能模块
 pkg/api: CRD接口定义
 pkg/controller: CR提交后触发的Reconcile具体逻辑，包括对选定pod进行delete，sidecar configmap的校验，sidecar数量的更新，configmap name的传递等
-pkg/webhook: webhook server对pod spec进行修改的具体逻辑
+pkg/webhook: webhook server对pod spec进行修改的具体逻辑  
 
 
 
